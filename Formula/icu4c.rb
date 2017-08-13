@@ -1,11 +1,11 @@
 class Icu4c < Formula
   desc "C/C++ and Java libraries for Unicode and globalization"
   homepage "http://site.icu-project.org/"
-  url "https://ssl.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz"
-  mirror "https://fossies.org/linux/misc/icu4c-59_1-src.tgz"
-  mirror "https://downloads.sourceforge.net/project/icu/ICU4C/59.1/icu4c-59_1-src.tgz"
-  version "59.1"
-  sha256 "7132fdaf9379429d004005217f10e00b7d2319d0fea22bdfddef8991c45b75fe"
+  url "https://ssl.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz"
+  mirror "https://fossies.org/linux/misc/icu4c-58_2-src.tgz"
+  mirror "https://downloads.sourceforge.net/project/icu/ICU4C/58.2/icu4c-58_2-src.tgz"
+  version "58.2"
+  sha256 "2b0a4410153a9b20de0e20c7d8b66049a72aef244b53683d0d7521371683da0c"
   head "https://ssl.icu-project.org/repos/icu/trunk/icu4c/", :using => :svn
 
   bottle do
@@ -15,9 +15,15 @@ class Icu4c < Formula
     sha256 "7ce8fa8fba5ba285bfb0278d2e73c01e8d2ff3115a5ad762255cacde6ffeecfb" => :yosemite
   end
 
-  keg_only :provided_by_osx, "macOS provides libicucore.dylib (but nothing else)"
+  keg_only :provided_by_osx, "macOS provides libicucore.dylib (but nothing else)."
+
+  option :universal
+  option :cxx11
 
   def install
+    ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
+
     args = %W[--prefix=#{prefix} --disable-samples --disable-tests --enable-static]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
 
